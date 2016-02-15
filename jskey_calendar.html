@@ -7,7 +7,7 @@
 <style>
 input {width:205px; cursor:pointer; margin : 1px 0px 1px 0px;}
 </style>
-<script type="text/javascript" src="./jskey/jskey_calendar-min.js"></script>
+<script type="text/javascript" src="./jskey/jskey_calendar.js"></script>
 </head>
 <body style="font-size:12px;">
 <pre>
@@ -24,32 +24,30 @@ input {width:205px; cursor:pointer; margin : 1px 0px 1px 0px;}
  * @param show String 取值 "yyyy-MM-dd HH:mm:ss" 或 "yyyy-MM-dd HH:mm" 或 "yyyy-MM-dd HH" 或 "yyyy-MM-dd" 或 "yyyy-MM" 或 "yyyy"
  * @param min String "yyyy-MM-dd HH:mm:ss"，可选最小值，默认"0100-01-01 00:00:00"
  * @param max String "yyyy-MM-dd HH:mm:ss"，可选最大值，默认"9999-12-31 23:59:59"
- * @param lang Integer 0(中文)|1(英语) 可自由扩充，需修改源码中的this.$lang属性
+ * @param lang Integer "zh-CN"(简体中文)|"en-US"(英语) 可自由扩充，参考源码中的$jskey.$CalendarLang["zh-CN"]属性
  * @param left Integer 相对X坐标,相对于文本框的横向偏移量
  * @param top Integer 相对Y坐标,相对于文本框的纵向偏移量
- * @param format String "yyyy-MM-dd HH:mm:ss.SSS w W" 格式（区分大小写）：yyyy→年，MM→月，dd→天，HH→24小时制，mm→分钟，ss→秒，SSS→毫秒，w→周几，W→当年的第几周(第一周不足七天时也当第一周)
+ * @param format String "yyyy-MM-dd HH:mm:ss w W" 格式（区分大小写）：yyyy→年，MM→月，dd→天，HH→24小时制，mm→分钟，ss→秒，w→周几，W→当年的第几周(第一周不足七天时也当第一周，计算方式目前为1月1日为第一周开始，且周日为新的一周开始，即一年首尾两周可能不是全周)
  */
 </pre>
-<form id="form1" name="form1" method="post" action="">
+<form id="form1" name="form1" method="post" action="" onsubmit="return false;">
 <table border="0" width="1000">
 	<tr>
 		<td>
-调用方式：onclick="$jskey.calendar.show(this, {})"<br />
+调用方式：onclick="$jskey.calendar.show({target:this})"<br />
 日期图片：class="WebDate"<br />
 引用对象的方法<br />
-<input type="text" value="" class="WebDate" onclick="$jskey.calendar.show(this, {})" readonly="true" title="" />show(this, {})<br />
-<input type="text" value="" class="WebDate" id="Text1" onclick="$jskey.calendar.show('Text1', {})" readonly="true" title="" />show('Text1', {})<br />
-<input type="text" value="" class="WebDate" onclick="$jskey.calendar.show('', {object:this})" readonly="true" title="" />show('', {object:this})<br />
-<input type="text" value="" class="WebDate" id="Text2" onclick="$jskey.calendar.show('', {id:'Text2'})" readonly="true" title="" />show('', {id:'Text2'})<br />
-<input type="text" value="1000-06-11 15:58:35" class="WebDate" onclick="$jskey.calendar.show(this, {lang:0,format:'yyyy-MM-dd HH:mm:ss',show:'yyyy-MM-dd HH:mm.ss'})" readonly="true" title="yyyy-MM-dd HH:mm.ss" />show(this, {lang:0,format:'yyyy-MM-dd HH:mm:ss',show:'yyyy-MM-dd HH:mm.ss'})<br />
-<input type="text" value="2014-11-11 11:59:59" class="WebDate" onclick="$jskey.calendar.show(this, {min:'2014-11-12 15:47:24',max:'2015-03-25 09:10:11',lang:0,format:'yyyy-MM-dd HH:mm:ss',show:'yyyy-MM-dd HH:mm.ss'})" readonly="true" title="yyyy-MM-dd HH:mm.ss" />show(this, {min:'2014-11-12 15:47:24',max:'2015-03-25 09:10:11',lang:0,format:'yyyy-MM-dd HH:mm:ss',show:'yyyy-MM-dd HH:mm.ss'})<br />
+<input type="text" value="" class="WebDate" onclick="$jskey.calendar.show({target:this})" readonly="true" title="" />show({target:this})<br />
+<input type="text" value="" id="MyText" readonly="true" title="" /> <button onclick="$jskey.calendar.show({target:'MyText'})" class="WebDate" style="width:22px;height:18px;border:none;">&nbsp;</button>show({target:'MyText'})<br />
+<input type="text" value="1000-06-11 15:58:35" class="WebDate" onclick="$jskey.calendar.show({target:this,lang:'zh-TW',format:'yyyy-MM-dd HH:mm:ss',show:'yyyy-MM-dd HH:mm.ss'})" readonly="true" title="yyyy-MM-dd HH:mm.ss" />show({target:this,lang:'zh-TW',format:'yyyy-MM-dd HH:mm:ss',show:'yyyy-MM-dd HH:mm.ss'})<br />
+<input type="text" value="2014-11-11 11:59:59" class="WebDate" onclick="$jskey.calendar.show(this, {min:'2014-11-12 15:47:24',max:'2015-03-25 09:10:11',lang:'zh-CN',format:'yyyy-MM-dd HH:mm:ss',show:'yyyy-MM-dd HH:mm.ss'})" readonly="true" title="yyyy-MM-dd HH:mm.ss" />show(this, {min:'2014-11-12 15:47:24',max:'2015-03-25 09:10:11',lang:'zh-CN',format:'yyyy-MM-dd HH:mm:ss',show:'yyyy-MM-dd HH:mm.ss'})<br />
 
 <br />
 <input type="text" value="jsjs" class="WebDate" onclick="$jskey.calendar.show(this, {format:'yyyy-MM-dd W',show:'yyyy'})" readonly="true" title="yyyy" />show(this, {format:'yyyy-MM-dd W',show:'yyyy'})<br />
-<input type="text" value="2004-06" class="WebDate" onclick="$jskey.calendar.show(this, {lang:1,format:'yyyy-MM',show:'yyyy-MM'})" readonly="true" title="yyyy-MM" />show(this, {lang:1,format:'yyyy-MM',show:'yyyy-MM'})<br />
+<input type="text" value="2004-06" class="WebDate" onclick="$jskey.calendar.show(this, {lang:'en-US',format:'yyyy-MM',show:'yyyy-MM'})" readonly="true" title="yyyy-MM" />show(this, {lang:'en-US',format:'yyyy-MM',show:'yyyy-MM'})<br />
 <input type="text" value="2007-06-11" class="WebDate" onclick="$jskey.calendar.show(this, {skin:'gray',format:'yyyy/MM/dd 周w 第W周',show:'yyyy-MM-dd',left:5,top:-10})" readonly="true" title="yyyy/MM/dd 周w 第W周" />show(this, {skin:'gray',format:'yyyy/MM/dd 周w 第W周',show:'yyyy-MM-dd',left:5,top:-10})<br />
 
-<input type="text" value="9999-06-11 15:58:35.000" class="WebDate" onclick="$jskey.calendar.show(this, {skin:'lightGreen',lang:0,format:'yyyy-MM-dd HH:mm:ss.SSS',show:'yyyy-MM-dd HH:mm.ss'})" readonly="true" title="yyyy-MM-dd HH:mm.ss.SSS" />show(this, {skin:'lightGreen',lang:0,format:'yyyy-MM-dd HH:mm:ss.SSS',show:'yyyy-MM-dd HH:mm.ss'})<br />
+<input type="text" value="9999-06-11 15:58:35.000" class="WebDate" onclick="$jskey.calendar.show(this, {skin:'lightGreen',lang:'en-US',format:'yyyy-MM-dd HH:mm:ss',show:'yyyy-MM-dd HH:mm.ss'})" readonly="true" title="yyyy-MM-dd HH:mm.ss" />show(this, {skin:'lightGreen',lang:'en-US',format:'yyyy-MM-dd HH:mm:ss',show:'yyyy-MM-dd HH:mm.ss'})<br />
 
 <select><option>ddddddddddddddddddddddd</option></select>
 		</td>
