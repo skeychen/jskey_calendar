@@ -846,15 +846,15 @@ $jskey.Calendar.prototype = {
 			this.showCalendar(p, old);
 			return true;
 		}
-		else if(typeof(p) == 'string' && p.length > 0){alert("Calendar兼容处理");
-			this.showCalendar(this.$(p), old);
-			return true;
-		}
+		//else if(typeof(p) == 'string' && p.length > 0){alert("Calendar兼容处理");
+		//	this.showCalendar(this.$(p), old);
+		//	return true;
+		//}
 		if(typeof(old) == 'object'){// 旧版本格式
 			p = old;
 		}
-		if(p.object){p.target = p.object;alert("Calendar兼容处理");}
-		if(p.id){p.target = p.id;alert("Calendar兼容处理");}
+		//if(p.object){p.target = p.object;alert("Calendar兼容处理");}
+		//if(p.id){p.target = p.id;alert("Calendar兼容处理");}
 		if(p.target){
 			this.showCalendar($jskey.$isDOM(p.target) ? p.target : this.$(p.target + ""), p);
 			return true;
