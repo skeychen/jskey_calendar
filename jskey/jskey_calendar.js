@@ -865,17 +865,6 @@ $jskey.Calendar.prototype = {
 
 
 
-$jskey.calendar = new $jskey.Calendar();
-//加载默认皮肤
-$jskey.calendar.$skin("default");
-
-
-
-}();
-
-
-
-
 $jskey.$CalendarLang["zh-CN"] = {
 	"M":["01月","02月","03月","04月","05月","06月","07月","08月","09月","10月","11月","12月"],
 	"w":["日","一","二","三","四","五","六"],
@@ -883,6 +872,9 @@ $jskey.$CalendarLang["zh-CN"] = {
 	"f":["", "秒钟", "分钟", "时钟", "", "月份", "年份"],
 	"b":["确定", "清空", "关闭"]
 };
+
+
+
 $jskey.$CalendarLang["zh-TW"] = {
 	"M":["01月","02月","03月","04月","05月","06月","07月","08月","09月","10月","11月","12月"],
 	"w":["日","一","二","三","四","五","六"],
@@ -890,6 +882,9 @@ $jskey.$CalendarLang["zh-TW"] = {
 	"f":["", "秒鐘", "分鐘", "時鐘", "", "月份", "年份"],
 	"b":["確定", "清空", "關閉"]
 };
+
+
+
 $jskey.$CalendarLang["en-US"] = {
 	"M":["January","February","March","April","May","June","July","August","September","October","November","December"],
 	"w":["Su","Mo","Tu","We","Th","Fr","Sa"],
@@ -897,6 +892,16 @@ $jskey.$CalendarLang["en-US"] = {
 	"f":["", "second", "minute", "hour", "", "month", "year"],
 	"b":["OK","Cls","Close"]
 };
+
+
+
+$jskey.calendar = new $jskey.Calendar();
+//加载默认皮肤
+$jskey.calendar.$skin("default");
+
+
+
+}();
 
 
 
