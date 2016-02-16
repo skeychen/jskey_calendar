@@ -669,7 +669,7 @@ $jskey.Calendar.prototype = {
 				else if(this.getAttribute("otd") == "x"){// 上或下一个月的日期
 					t = this.getAttribute("tn") != "tdDay" ? "hholiday" : "hday";
 				}
-				else if(this.getAttribute("tn") != "tdDay"){
+				else if(this.getAttribute("tn") == "tdHoliday"){
 					t = "holiday";
 				}
 			}
