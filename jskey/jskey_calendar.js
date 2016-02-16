@@ -353,7 +353,7 @@ $jskey.Calendar.prototype = {
 	},
 	$drawChoose:function(t, year){
 		var E = this;
-		var o = E.$(E.$k.data), L = $jskey.$CalendarLang[E.$c.lang], a = [];
+		var S = E.$s, o = E.$(E.$k.data), L = $jskey.$CalendarLang[E.$c.lang], a = [];
 		a.push('<table>');
 		if(t < 4 && t > 0){
 			var m = 10;//分钟2和秒钟1
@@ -905,7 +905,7 @@ $jskey.$CalendarLang["en-US"] = {
 	"w":["Su","Mo","Tu","We","Th","Fr","Sa"],
 	"t":["Time", "", " : ", " : "],
 	"f":["", "second", "minute", "hour", "", "month", "year"],
-	"b":["OK","Cls","Close"]
+	"b":["Done","Cls","Close"]
 };
 
 
