@@ -155,12 +155,22 @@ $jskey.Calendar.prototype = {
 						z.setAttribute("otd", "x");
 						z.className = z.getAttribute("tn") == "tdDay" ? "hday" : "hholiday";
 						E.$onMouse(z);
-						z.onclick = function(){
-							E.$s.d = this.innerHTML;// 设置为新的日
-							E.goPrevMonth(E);
-							E.$recovery();
-							E.$(E.$k.ok).click();
-						};
+						if(E.$c.level == 4){// 如果级别为日，点击直接返回
+							z.onclick = function(){
+								E.$s.d = this.innerHTML;// 设置为新的日
+								E.goPrevMonth(E);
+								E.$recovery();
+								E.$(E.$k.ok).click();// 如果级别为日，点击直接返回
+							};
+						}
+						else{
+							z.onclick = function(){
+								E.$s.d = this.innerHTML;// 设置为新的日
+								E.goPrevMonth(E);
+								E.$recovery();
+								E.$bindData();// 如果级别为日，点击刷新视图
+							};
+						}
 					}
 				}
 				else{// 肯定是下一月(0 > v > -15)
@@ -174,12 +184,22 @@ $jskey.Calendar.prototype = {
 						z.setAttribute("otd", "x");
 						z.className = z.getAttribute("tn") == "tdDay" ? "hday" : "hholiday";
 						E.$onMouse(z);
-						z.onclick = function(){
-							E.$s.d = this.innerHTML;// 设置为新的日
-							E.goNextMonth(E);
-							E.$recovery();
-							E.$(E.$k.ok).click();
-						};
+						if(E.$c.level == 4){// 如果级别为日，点击直接返回
+							z.onclick = function(){
+								E.$s.d = this.innerHTML;// 设置为新的日
+								E.goNextMonth(E);
+								E.$recovery();
+								E.$(E.$k.ok).click();// 如果级别为日，点击直接返回
+							};
+						}
+						else{
+							z.onclick = function(){
+								E.$s.d = this.innerHTML;// 设置为新的日
+								E.goNextMonth(E);
+								E.$recovery();
+								E.$bindData();// 如果级别为日，点击刷新视图
+							};
+						}
 					}
 				}
 			}
