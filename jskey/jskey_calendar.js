@@ -1,7 +1,7 @@
 /**
  * 日历类
- * @version 8
- * @datetime 2016-01-12 13:14
+ * @version 9
+ * @datetime 2016-02-16 16:19
  * @author skey_chen
  * @copyright 2011-2016 &copy; skey_chen@163.com
  * @license LGPL
@@ -129,7 +129,7 @@ $jskey.Calendar.prototype = {
 	//绑定数据到月视图
 	$bindData:function(){
 		var E = this;
-		var S = E.$s;
+		var S = E.$s, I = E.$c.min, A = E.$c.max;
 		E.$(E.$k.show).style.display = "none";
 		E.$recovery();
 		
@@ -137,14 +137,54 @@ $jskey.Calendar.prototype = {
 		var tds = E.$(E.$k.date).getElementsByTagName("td");// 去掉了th的标题头了
 		for(var i = 0;i < tds.length;i++){
 			var z = tds[i];
-			z.onmouseover = z.onmouseout = function(){};
+			z.onclick = z.onmouseover = z.onmouseout = function(){};//  还原
+			z.setAttribute("otd", "");//  还原
 			var v = dateArray[i];
 			z.innerHTML = v;
-			if(v == "&nbsp;"
-				|| (!(E.$checkDate(4, v)))
-			){
+			if(v < 0){
 				z.className = "";
-				z.onclick = function(){};
+				z.innerHTML = -v;
+				if(v < -20){// 肯定是上一月(-22 > v > -32)
+					var y = S.y, M = S.M;
+					M--;
+					if(M == -1){
+						y--;
+						M = 11;
+					}
+					if(E.$checkDate(4, {y:y,M:M,d:-v})){
+						z.setAttribute("otd", "x");
+						z.className = z.getAttribute("tn") == "tdDay" ? "hday" : "hholiday";
+						E.$onMouse(z);
+						z.onclick = function(){
+							E.$s.d = this.innerHTML;// 设置为新的日
+							E.goPrevMonth(E);
+							E.$recovery();
+							E.$(E.$k.ok).click();
+						};
+					}
+				}
+				else{// 肯定是下一月(0 > v > -15)
+					var y = S.y, M = S.M;
+					M++;
+					if(M > 11){
+						y++;
+						M = 0;
+					}
+					if(E.$checkDate(4, {y:y,M:M,d:-v})){
+						z.setAttribute("otd", "x");
+						z.className = z.getAttribute("tn") == "tdDay" ? "hday" : "hholiday";
+						E.$onMouse(z);
+						z.onclick = function(){
+							E.$s.d = this.innerHTML;// 设置为新的日
+							E.goNextMonth(E);
+							E.$recovery();
+							E.$(E.$k.ok).click();
+						};
+					}
+				}
+			}
+			else if(!(E.$checkDate(4, {y:S.y,M:S.M,d:v}))){
+				z.className = "";
 			}
 			else{
 				z.className = (z.getAttribute("tn") == "tdDay")?"day":"holiday";
@@ -175,7 +215,7 @@ $jskey.Calendar.prototype = {
 								t = "today";
 							}
 							else{
-								if(E.$sel.getAttribute("tn") == "tdHoliday"){
+								if(E.$sel.getAttribute("tn") != "tdDay"){
 									t = "holiday";
 								}
 							}
@@ -195,18 +235,9 @@ $jskey.Calendar.prototype = {
 	$blur:function(){
 		if(!(this.$focus)){this.$hide();}
 	},
-	$checkDate:function(t, n){
+	$checkDate:function(t, o){
 //		//算法一，没对象开销，但代码量多了一点点
-//		var S = this.$s, I = this.$c.min, A = this.$c.max;
-//		var o =
-//		{
-//			y:(t==6?n:S.y),
-//			M:(t==5?n:S.M),
-//			d:(t==4?n:S.d),
-//			H:(t==3?n:S.H),
-//			m:(t==2?n:S.m),
-//			s:(t==1?n:S.s)
-//		};
+//		var I = this.$c.min, A = this.$c.max;
 //		switch(t)
 //		{
 //			case 1:if((I.y == o.y && o.M == I.M && o.d == I.d && o.H == I.H && o.m == I.m && o.s < I.s) || (A.y == o.y && A.M == o.M && A.d == o.d && A.H == o.H && A.m == o.m && A.s < o.s)){return false;}
@@ -219,42 +250,17 @@ $jskey.Calendar.prototype = {
 //		return true;
 
 //		//算法二
-//		var S = this.$s, I = this.$c.min, A = this.$c.max;
-//		var o =
-//		{
-//			y:(t==6?n:S.y),
-//			M:(t==5?n:S.M),
-//			d:(t==4?n:S.d),
-//			H:(t==3?n:S.H),
-//			m:(t==2?n:S.m),
-//			s:(t==1?n:S.s)
-//		}, i = {y:I.y, M:I.M, d:I.d, H:I.H, m:I.m, s:I.s}, a = {y:A.y, M:A.M, d:A.d, H:A.H, m:A.m, s:A.s};
-//		switch(t)
-//		{
-//			case 6:o.M = i.M = a.M = 0;//年忽略月及以下
-//			case 5:o.d = i.d = a.d = 1;//月忽略日及以下
-//			case 4:o.H = i.H = a.H = 0;//日忽略时及以下
-//			case 3:o.m = i.m = a.m = 0;//时忽略分及以下
-//			case 2:o.s = i.s = a.s = 0;//分忽略秒及以下
-//		}
-//		var di=(new Date(i.y, i.M, i.d, i.H, i.m, i.s)).valueOf();
-//		var da=(new Date(a.y, a.M, a.d, a.H, a.m, a.s)).valueOf();
-//		var d =(new Date(o.y, o.M, o.d, o.H, o.m, o.s)).valueOf();
-//		return di <= d && d <= da;
-
-//		//算法三
-		var S = this.$s, C = this.$c;
-		var I = C.min, A = C.max, o = {y:(t==6?n:S.y),M:0,d:1,H:0,m:0,s:0}, i = {y:I.y,M:0,d:1,H:0,m:0,s:0}, a = {y:A.y,M:0,d:1,H:0,m:0,s:0};
+		var I = this.$c.min, A = this.$c.max, x = {M:0,d:1,H:0,m:0,s:0}, i = {M:0,d:1,H:0,m:0,s:0}, a = {M:0,d:1,H:0,m:0,s:0};
 		switch(t){
-			case 1:o.s = (t==1?n:S.s); i.s = I.s, a.s = A.s;
-			case 2:o.m = (t==2?n:S.m); i.m = I.m, a.m = A.m;//分忽略以上
-			case 3:o.H = (t==3?n:S.H); i.H = I.H, a.H = A.H;//时忽略以上
-			case 4:o.d = (t==4?n:S.d); i.d = I.d, a.d = A.d;//日忽略以上
-			case 5:o.M = (t==5?n:S.M); i.M = I.M, a.M = A.M;//月忽略以上
+			case 1:x.s = o.s; i.s = I.s, a.s = A.s;
+			case 2:x.m = o.m; i.m = I.m, a.m = A.m;//分忽略以上
+			case 3:x.H = o.H; i.H = I.H, a.H = A.H;//时忽略以上
+			case 4:x.d = o.d; i.d = I.d, a.d = A.d;//日忽略以上
+			case 5:x.M = o.M; i.M = I.M, a.M = A.M;//月忽略以上
 		}
-		var di=(new Date(i.y, i.M, i.d, i.H, i.m, i.s)).valueOf();
-		var da=(new Date(a.y, a.M, a.d, a.H, a.m, a.s)).valueOf();
-		var d =(new Date(o.y, o.M, o.d, o.H, o.m, o.s)).valueOf();
+		var di=(new Date(I.y, i.M, i.d, i.H, i.m, i.s)).valueOf();
+		var da=(new Date(A.y, a.M, a.d, a.H, a.m, a.s)).valueOf();
+		var d =(new Date(o.y, x.M, x.d, x.H, x.m, x.s)).valueOf();
 		return di <= d && d <= da;
 	},
 	$draw:function(){
@@ -330,10 +336,10 @@ $jskey.Calendar.prototype = {
 		
 		E.$panel.innerHTML = a.join("");
 		//事件注册
-		E.$(K.prevY).onclick = function(){E.goPrevYear(E);};//上一年
-		E.$(K.nextY).onclick = function(){E.goNextYear(E);};//下一年
-		E.$(K.prevM).onclick = function(){E.goPrevMonth(E);};//上一月
-		E.$(K.nextM).onclick = function(){E.goNextMonth(E);};//下一月
+		E.$(K.prevY).onclick = function(){E.goPrevYear(E);E.$bindData();};//上一年
+		E.$(K.nextY).onclick = function(){E.goNextYear(E);E.$bindData();};//下一年
+		E.$(K.prevM).onclick = function(){E.goPrevMonth(E);E.$bindData();};//上一月
+		E.$(K.nextM).onclick = function(){E.goNextMonth(E);E.$bindData();};//下一月
 		E.$(K.y).onclick = function(){E.$drawChoose(6, E.$s.y);};//年
 		E.$(K.M).onclick = function(){E.$drawChoose(5);};//月
 		E.$(K.H).onclick = function(){E.$drawChoose(3);};//时
@@ -405,7 +411,7 @@ $jskey.Calendar.prototype = {
 				}
 				else{
 					q = E.$s.y;
-					if(E.$checkDate(6, v)){
+					if(E.$checkDate(6, {y:v})){
 						z.className = "day";
 						z.onclick = function(){
 							E.$s.y = this.getAttribute("cv");
@@ -417,7 +423,7 @@ $jskey.Calendar.prototype = {
 			}
 			else if(t == 5){
 				q = E.$s.M;
-				if(E.$checkDate(5, v)){
+				if(E.$checkDate(5, {y:S.y,M:v})){
 					z.className = "day";
 					z.onclick = function(){
 						E.$s.M = this.getAttribute("cv");
@@ -428,7 +434,7 @@ $jskey.Calendar.prototype = {
 			}
 			else if(t == 3){
 				q = E.$s.H;
-				if(E.$checkDate(3, v)){
+				if(E.$checkDate(3, {y:S.y,M:S.M,d:S.d,H:v})){
 					z.className = "day";
 					z.onclick = function(){
 						E.$s.H = this.innerHTML;
@@ -439,7 +445,7 @@ $jskey.Calendar.prototype = {
 			}
 			else if(t == 2){
 				q = E.$s.m;
-				if(E.$checkDate(2, v)){
+				if(E.$checkDate(2, {y:S.y,M:S.M,d:S.d,H:S.H,m:v})){
 					z.className = "day";
 					z.onclick = function(){
 						E.$s.m = this.innerHTML;
@@ -450,7 +456,7 @@ $jskey.Calendar.prototype = {
 			}
 			else if(t == 1){
 				q = E.$s.s;
-				if(E.$checkDate(1, v)){
+				if(E.$checkDate(1, {y:S.y,M:S.M,d:S.d,H:S.H,m:S.m,s:v})){
 					z.className = "day";
 					z.onclick = function(){
 						E.$s.s = this.innerHTML;
@@ -521,11 +527,21 @@ $jskey.Calendar.prototype = {
 	//根据年、月得到月视图数据(数组形式)
 	$getViewArray:function(y, m){
 		var a = [];
-		var f = new Date(y, m, 1).getDay();
-		var L = new Date(y, m + 1, 0).getDate();// 从 Date对象返回一个月中的某一天 (1~31)。0即上个月最后一天
-		for(var i = 0;i < 42;i++){// 匹配生成的html格式数
-			a[i] = "&nbsp;";
+		var f = new Date(y, m, 1).getDay();// 从 Date 对象返回一周中的某一天 (0 ~ 6)。0周日,6是周六
+		var L = new Date(y, m + 1, 0).getDate();// 从 Date对象返回当前是一个月中的第几天 (1~31)。第三个参数设置0即上个月最后一天
+		//for(var i = 0;i < 42;i++){// 匹配生成的html格式数
+		//	a[i] = "&nbsp;";
+		//}
+		// 补前面月份日期
+		var afL = new Date(y, m, 0).getDate();// 上月最后一天
+		for(var i = f;i > 0;i--){
+			a[i-1] = f - i - afL;// 用负数标记
 		}
+		// 补后面月份日期
+		for(var i = f+L, j = 1;i < 42;i++,j++){// 匹配生成的html格式数
+			a[i] = -j;
+		}
+		
 		for(var i = 0;i < L;i++){
 			a[i + f] = i + 1;
 		}
@@ -552,7 +568,6 @@ $jskey.Calendar.prototype = {
 			return;
 		}
 		E.$s.y--;
-		E.$bindData();
 	},
 	//向后一年
 	goNextYear:function(E){
@@ -560,7 +575,6 @@ $jskey.Calendar.prototype = {
 			return;
 		}
 		E.$s.y++;
-		E.$bindData();
 	},
 	//向前一月
 	goPrevMonth:function(E){
@@ -573,7 +587,6 @@ $jskey.Calendar.prototype = {
 			S.y--;
 			S.M = 11;
 		}
-		E.$bindData();
 	},
 	//向后一月
 	goNextMonth:function(E){
@@ -586,7 +599,6 @@ $jskey.Calendar.prototype = {
 			S.y++;
 			S.M = 0;
 		}
-		E.$bindData();
 	},
 	//隐藏日历
 	$hide:function(){
@@ -654,7 +666,10 @@ $jskey.Calendar.prototype = {
 				else if(this.isMe){// 弹出层
 					t = "sel";
 				}
-				else if(this.getAttribute("tn") == "tdHoliday"){
+				else if(this.getAttribute("otd") == "x"){// 上或下一个月的日期
+					t = this.getAttribute("tn") != "tdDay" ? "hholiday" : "hday";
+				}
+				else if(this.getAttribute("tn") != "tdDay"){
 					t = "holiday";
 				}
 			}
@@ -784,25 +799,25 @@ $jskey.Calendar.prototype = {
 				if(!isNaN(y) && y > 0){
 					if(_M != -1){
 						M = v.substring(_M, _M + 2);
-						if(isNaN(M)){M = t.getMonth() + 1;}
+						if(isNaN(M)){M = (t.getMonth() + 1);}
 					}
 					if(_d != -1){
-						d = v.substring(_d, _d + 2);
+						d = E.$int(v.substring(_d, _d + 2));
 						if(isNaN(d)){d = t.getDate();}
 					}
 					if(_H != -1){
-						H = v.substring(_H, _H + 2);
+						H = E.$int(v.substring(_H, _H + 2));
 						if(isNaN(H)){H = t.getHours();}
 					}
 					if(_m != -1){
-						m = v.substring(_m, _m + 2);
+						m = E.$int(v.substring(_m, _m + 2));
 						if(isNaN(m)){m = t.getMinutes();}
 					}
 					if(_s != -1){
-						s = v.substring(_s, _s + 2);
+						s = E.$int(v.substring(_s, _s + 2));
 						if(isNaN(s)){s = t.getSeconds();}
 					}
-					eval("t=new Date(" + y + "," + (M - 1) + "," + d + "," + H + "," + m + "," + s + ")");
+					eval("t=new Date(" + y + "," + (E.$int(M) - 1) + "," + E.$int(d) + "," + E.$int(H) + "," + E.$int(m) + "," + E.$int(s) + ")");
 				}
 			}
 		}

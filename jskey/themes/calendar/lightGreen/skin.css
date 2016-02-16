@@ -3,7 +3,7 @@
 .jskey_cal * {padding:0;margin:0 auto;width:auto;background-color:inherit;font-size:12px;font-family:"Microsoft Yahei","\5B8B\4F53",arial;color:#000000;text-align:center;vertical-align:middle;box-sizing:content-box;}
 .jskey_cal .div {width:202px;}
 
-.jskey_cal .jsarr {width:18px;height:18px;overflow:hidden;margin:0 auto;padding:0;display:block;}
+.jskey_cal .jsarr {width:18px;height:18px;overflow:hidden;margin:0 auto;padding:0;display:block;display:inline-block;}
 .jskey_cal .jsarr div {box-sizing:content-box;margin:0;padding:0;width:0;height:0;border:5px dashed transparent;overflow:hidden;}
 .jskey_cal .jsarr .up {margin:1px 0px 0px 4px;border-bottom:5px solid #000;}
 .jskey_cal .jsarr .down {margin:7px 0px 0px 4px;left:1px;border-top:5px solid #000;}
@@ -21,8 +21,8 @@
 .jskey_cal .dymd .dm {float:right;}
 .jskey_cal .dymd .dp {border-top:none;border-bottom:none;border-left:none;}
 .jskey_cal .dymd .dn {border-top:none;border-bottom:none;border-right:none;}
-.jskey_cal .dymd .year {width:60px;border:none;background-color:#ffffff;}
-.jskey_cal .dymd .month {width:59px;border:none;background-color:#ffffff;}
+.jskey_cal .dymd .year {width:47px;border:none;background-color:#ffffff;}
+.jskey_cal .dymd .month {width:72px;border:none;background-color:#ffffff;}
 
 .jskey_cal .dymd:after {content:"";display:block;height:0;visibility:hidden;clear:both;}
 
@@ -31,6 +31,8 @@
 .jskey_cal .date .close {padding-right:3px;cursor:pointer;}
 .jskey_cal .date table {position:relative;width:100%;border:0px;font-size:12px;border-collapse:collapse;border-spacing:0px;}
 .jskey_cal .date td {line-height:18px;text-align:center;background-color:#daf3f5;color:#cccccc;}
+.jskey_cal .date .hday {color:#999999;}
+.jskey_cal .date .hholiday {color:#996666;}
 .jskey_cal .date .holiday {cursor:pointer;color:#ff0000;}/*双休日，节假日*/
 .jskey_cal .date .day {color:#000000;}/*工作日*/
 .jskey_cal .date .sel {background-color:#77bbaa;color:#ffffff;}/*已选*/
