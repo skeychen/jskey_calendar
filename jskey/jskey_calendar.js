@@ -168,7 +168,7 @@ $jskey.Calendar.prototype = {
 								E.$s.d = this.innerHTML;// 设置为新的日
 								E.goPrevMonth(E);
 								E.$recovery();
-								E.$bindData();// 如果级别为日，点击刷新视图
+								E.$bindData();// 如果级别不为日，点击刷新视图
 							};
 						}
 					}
@@ -197,7 +197,7 @@ $jskey.Calendar.prototype = {
 								E.$s.d = this.innerHTML;// 设置为新的日
 								E.goNextMonth(E);
 								E.$recovery();
-								E.$bindData();// 如果级别为日，点击刷新视图
+								E.$bindData();// 如果级别不为日，点击刷新视图
 							};
 						}
 					}
