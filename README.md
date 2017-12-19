@@ -1,6 +1,6 @@
 jskey_calendar
 ==============
-[![License: LGPL v3]](http://www.gnu.org/licenses/lgpl-3.0)
+[![License : GNU Lesser General Public License v3.0]](https://choosealicense.com/licenses/lgpl-3.0/)
 
 html日历选择控件
 
