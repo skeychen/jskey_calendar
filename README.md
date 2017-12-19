@@ -1,6 +1,6 @@
 jskey_calendar
 ==============
-[![License : GNU Lesser General Public License v3.0]](https://choosealicense.com/licenses/lgpl-3.0/)
+[![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
 html日历选择控件
 
