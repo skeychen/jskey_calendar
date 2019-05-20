@@ -1,9 +1,9 @@
 /**
  * 日历类
- * @version 9
- * @datetime 2016-02-16 17:47
+ * @version 10
+ * @datetime 2019-01-07 16:10
  * @author skey_chen
- * @copyright 2011-2016 &copy; skey_chen@163.com
+ * @copyright 2011-2019 &copy; skey_chen@163.com
  * @license LGPL
  */
 var $jskey = $jskey || {};
@@ -62,7 +62,7 @@ $jskey.$CalendarLang = {};
 $jskey.Calendar = function(){
 	this.d = new Date();// 临时变量
 	this.$p = {
-		"min":"0100-01-01 00:00:00",// 默认的初始化年份个数
+		"min":"1582-10-15 00:00:00",// 默认的初始化年份为格里高利历实施日，中国从1912年开始实施(民国元年)
 		"max":"9999-12-31 23:59:59",
 		"cy":this.d.getFullYear(),//当前年
 		"cM":this.d.getMonth(),//当前月
@@ -572,7 +572,7 @@ $jskey.Calendar.prototype = {
 		return a;
 	},
 	/**
-	 * 取出指定日期是该年的第几周@param currDate当前时间对象
+	 * 取出指定日期是该年的第几周@param currDate当前时间对象，仅适用于1583年及之后
 	 */
 	$getWeek:function(d){
 		var x = new Date(d.getFullYear(), 0, 1);//当前年1月1日
