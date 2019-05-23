@@ -1,7 +1,7 @@
 /**
  * 日历类
  * @version 10
- * @datetime 2019-01-07 16:10
+ * @datetime 2019-05-23 15:06
  * @author skey_chen
  * @copyright 2011-2019 &copy; skey_chen@163.com
  * @license LGPL
@@ -61,6 +61,7 @@ $jskey.$CalendarLang = {};
 
 $jskey.Calendar = function(){
 	this.d = new Date();// 临时变量
+	this.$param = null;
 	this.$p = {
 		"min":"1582-10-15 00:00:00",// 默认的初始化年份为格里高利历实施日，中国从1912年开始实施(民国元年)
 		"max":"9999-12-31 23:59:59",
@@ -110,7 +111,6 @@ $jskey.Calendar = function(){
 	};
 	//public 初始化
 	this.$focus = false;//是否为焦点
-	this.$input = null;
 	this.$div = null;//因为ie下需要增加iframe才能置顶，所以它放了日历容器和frame，顺便用于控制是否显示
 	this.$panel = null;//div容器中实际的日历div
 	this.$sel = null;// 当前被选中的td单元格
@@ -755,11 +755,18 @@ $jskey.Calendar.prototype = {
 	//返回所选日期
 	$return:function(dt){
 		var E = this;
-		var o = E.$input;
+		var o = E.$param.target;
 		if(o != null){
 			o.value = dt;
 		}
 		E.$hide();
+		try{
+			if(E.$param.fn){
+				var fn = function(){};
+				eval("fn=" + E.$param.fn);
+				fn(E.$param);
+			}
+		}catch(ex){}
 		if(o.onchange == null){
 			if(typeof(o.changeEvent) == 'function'){
 				o.changeEvent();// 调用转化后的自定义函数
@@ -791,7 +798,8 @@ $jskey.Calendar.prototype = {
 		return false;
 	},
 	//显示日历
-	showCalendar:function(o, p){
+	showCalendar:function(p){
+		var o = p.target;
 		var E = this;
 		var t;// 临时变量
 		E.$init();//初始化布局div
@@ -846,7 +854,8 @@ $jskey.Calendar.prototype = {
 		}
 		E.$reset(t);//初始化$s
 		E.$skin(p.skin||"default");
-		E.$input = o;
+		E.$param = p;
+		
 		var x = E.$isChange(p);
 		if(E.$panel.innerHTML == "" || x){
 			E.$draw();
@@ -877,21 +886,23 @@ $jskey.Calendar.prototype = {
 	},
 	//画出日历
 	show:function(p, old){
-		if($jskey.$isDOM(p)){
-			this.showCalendar(p, old);
+		if($jskey.$isDOM(p)){// 旧版本格式(this, {})
+			old.target = p;// 变成新版本
+			this.showCalendar(old);
 			return true;
 		}
 		//else if(typeof(p) == 'string' && p.length > 0){alert("Calendar兼容处理");
 		//	this.showCalendar(this.$(p), old);
 		//	return true;
 		//}
-		if(typeof(old) == 'object'){// 旧版本格式
+		if(typeof(old) == 'object'){// 奇怪的旧版本，即{null, {}}
 			p = old;
 		}
 		//if(p.object){p.target = p.object;alert("Calendar兼容处理");}
 		//if(p.id){p.target = p.id;alert("Calendar兼容处理");}
 		if(p.target){
-			this.showCalendar($jskey.$isDOM(p.target) ? p.target : this.$(p.target + ""), p);
+			p.target = $jskey.$isDOM(p.target) ? p.target : this.$(p.target + "");// 变target为对象
+			this.showCalendar(p);
 			return true;
 		}
 		return false;
