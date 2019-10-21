@@ -1,10 +1,10 @@
 /**
  * 日历类
- * @version 11
- * @datetime 2019-08-13 18:25
+ * @version 12
+ * @datetime 2019-10-21 11:11
  * @author skey_chen
  * @copyright 2011-2019 &copy; 249725997@qq.com
- * @license LGPL
+ * @license LGPL-3.0 https://github.com/skeychen/dswork/blob/master/LICENSE
  */
 var $jskey = $jskey || {};
 
@@ -537,8 +537,8 @@ $jskey.Calendar.prototype = {
 	$getPoint:function(e){
 		var x = e.offsetLeft, y = e.offsetTop;
 		while(e = e.offsetParent){// 递归加上父窗口的
-			x += e.offsetLeft;
-			y += e.offsetTop;
+			x += e.offsetLeft - e.scrollLeft;
+			y += e.offsetTop - e.scrollTop;
 		}
 		// sy距离当前视图上面的距离，即文档中的y-滚动的量
 		var a = {"sx":x, "sy":y - document.documentElement.scrollTop, "x":x, "y":y, "w":this.$(this.$k.panel).offsetWidth, "h":this.$(this.$k.panel).offsetHeight};
