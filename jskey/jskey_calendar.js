@@ -1,7 +1,7 @@
 /**
  * 日历类
- * @version 12
- * @datetime 2019-10-21 11:11
+ * @version 13
+ * @datetime 2019-10-22 18:38
  * @author skey_chen
  * @copyright 2011-2019 &copy; 249725997@qq.com
  * @license LGPL-3.0 https://github.com/skeychen/dswork/blob/master/LICENSE
@@ -536,12 +536,23 @@ $jskey.Calendar.prototype = {
 	//取得HTML控件绝对位置
 	$getPoint:function(e){
 		var x = e.offsetLeft, y = e.offsetTop;
-		while(e = e.offsetParent){// 递归加上父窗口的
-			x += e.offsetLeft - e.scrollLeft;
-			y += e.offsetTop - e.scrollTop;
+		var o = e;
+		while(e = e.offsetParent){// 递归加上存在offset的父窗口
+			x += e.offsetLeft;
+			y += e.offsetTop;
+		}
+		while(o = o.parentNode){// 递归加上父窗口的
+			if(o == document){
+				x -= document.documentElement.scrollLeft;
+				y -= document.documentElement.scrollTop;
+			}
+			else{
+				x -= o.scrollLeft;
+				y -= o.scrollTop;
+			}
 		}
 		// sy距离当前视图上面的距离，即文档中的y-滚动的量
-		var a = {"sx":x, "sy":y - document.documentElement.scrollTop, "x":x, "y":y, "w":this.$(this.$k.panel).offsetWidth, "h":this.$(this.$k.panel).offsetHeight};
+		var a = {"sx":x, "sy":y, "x":x, "y":y, "w":this.$(this.$k.panel).offsetWidth, "h":this.$(this.$k.panel).offsetHeight};
 		return a;
 	},
 	//根据年、月得到月视图数据(数组形式)
