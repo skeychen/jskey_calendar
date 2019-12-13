@@ -38,12 +38,12 @@ $jskey.$replace = function(str, t, u){
 };
 
 $jskey.$link = function(path){
-    var k = document.createElement("link");
-    k.rel = "stylesheet";
-    k.type = "text/css";
-    k.href = path;
-    document.getElementsByTagName("head")[0].appendChild(k);
-    k = null;
+	var k = document.createElement("link");
+	k.rel = "stylesheet";
+	k.type = "text/css";
+	k.href = path;
+	document.getElementsByTagName("head")[0].appendChild(k);
+	k = null;
 };
 
 
@@ -493,11 +493,11 @@ $jskey.Calendar.prototype = {
 		E.$(E.$k.show).style.display = "";
 	},
 	$fnNum:function(v){
-	    return v < 10 ? '0' + (v|0) : v;
+		return v < 10 ? '0' + (v|0) : v;
 	},
 	$fnYear:function(v){
 		v = "000" + v;
-	    return v.substring(v.length - 4, v.length);
+		return v.substring(v.length - 4, v.length);
 	},
 	/**
 	 * 格式化日期@param d时间对象，f格式化样式
