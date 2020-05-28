@@ -1,9 +1,9 @@
 /**
  * 日历类
- * @version 13
- * @datetime 2019-10-22 18:38
+ * @version 14
+ * @datetime 2020-05-27 16:34
  * @author skey_chen
- * @copyright 2011-2019 &copy; 249725997@qq.com
+ * @copyright 2011-2020 &copy; 249725997@qq.com
  * @license LGPL-3.0 https://github.com/skeychen/dswork/blob/master/LICENSE
  */
 var $jskey = $jskey || {};
@@ -543,8 +543,8 @@ $jskey.Calendar.prototype = {
 		}
 		while(o = o.parentNode){// 递归加上父窗口的
 			if(o == document){
-				x -= document.documentElement.scrollLeft;
-				y -= document.documentElement.scrollTop;
+				x += document.documentElement.scrollLeft;
+				y += document.documentElement.scrollTop;
 			}
 			else{
 				x -= o.scrollLeft;
